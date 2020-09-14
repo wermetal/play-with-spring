@@ -9,14 +9,21 @@ public class PmPlayerInfo {
     private String currency;
     private String playerId;
 
-    PmPlayerInfo() {}
+    public PmPlayerInfo() {}
+
+    public PmPlayerInfo(String playerId, Long balance, String currency, String country) {
+        this.country = country;
+        this.balance = balance;
+        this.currency = currency;
+        this.playerId = playerId;
+    }
 
     public static PmPlayerInfo fromResponse(PmPlayerInfoResponse response) {
-        PmPlayerInfo playerInfo = new PmPlayerInfo();
-        playerInfo.country = response.getCountry();
-        playerInfo.balance = response.getBalance();
-        playerInfo.currency = response.getCurrency();
-        playerInfo.playerId = response.getPlayerId();
-        return playerInfo;
+        return new PmPlayerInfo(
+                response.getPlayerId(),
+                response.getBalance(),
+                response.getCurrency(),
+                response.getCountry()
+        );
     }
 }
