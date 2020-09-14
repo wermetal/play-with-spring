@@ -63,10 +63,11 @@ public class PmIntegrationService {
         betRequest.setCurrency(playerInfo.getCurrency());
         betRequest.setRoundClosed(false);
 
+        HttpEntity<Object> entity = new HttpEntity<>(betRequest, getHeaders());
         ResponseEntity<PmBetInfoResponse> response = this.restTemplate.exchange(
                 BASE_URL + "slots/bet",
                 HttpMethod.POST,
-                new HttpEntity<Object>(betRequest, getHeaders()),
+                entity,
                 PmBetInfoResponse.class
         );
 
@@ -109,6 +110,7 @@ public class PmIntegrationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(AUTH);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Eva-Hub-Consumer", EvaHubCoumsumer);
         headers.add("Eva-Product-Type", EvaProductType);
         return headers;

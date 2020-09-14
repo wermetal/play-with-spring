@@ -20,12 +20,18 @@ public class SlotService {
     public SpinResult spin(PmPlayerInfo playerInfo, String sessionId, Long bet) {
         String roundId = getRoundId();
 
+        //mock
         String mockSessionToken = "valid-session-token";
+
+        //mock
+        playerInfo.setCurrency("EUR");
+
+
         PmBetInfo betInfo = integrationService.makeBet(
-                "42",
+                "42", //mock
                 roundId,
                 getProductId(),
-                10000L,
+                1000L,
                 mockSessionToken,
                 playerInfo
         );
@@ -38,7 +44,7 @@ public class SlotService {
         if (winAmount > 0) {
             Long mockWinAmount = 2000L;
             PmBetInfo winInfo = integrationService.setWin(
-                    "43",
+                    "43", //mock
                     roundId,
                     getProductId(),
                     mockWinAmount,

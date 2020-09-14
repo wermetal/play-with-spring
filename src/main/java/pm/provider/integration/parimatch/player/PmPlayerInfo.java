@@ -8,7 +8,6 @@ public class PmPlayerInfo {
     private Long balance;
     private String currency;
     private String playerId;
-    private String sessionId;
 
     PmPlayerInfo() {}
 
@@ -17,7 +16,7 @@ public class PmPlayerInfo {
         playerInfo.country = response.getCountry();
         playerInfo.balance = response.getBalance();
         playerInfo.currency = response.getCurrency();
-        playerInfo.balance = response.getBalance();
+        playerInfo.playerId = response.getPlayerId();
         return playerInfo;
     }
 }

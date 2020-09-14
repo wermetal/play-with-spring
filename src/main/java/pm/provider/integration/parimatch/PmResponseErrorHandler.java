@@ -21,9 +21,10 @@ public class PmResponseErrorHandler
     public boolean hasError(ClientHttpResponse httpResponse)
             throws IOException {
 
+        HttpStatus status = httpResponse.getStatusCode();
         return (
-                httpResponse.getStatusCode().series() == CLIENT_ERROR
-                        || httpResponse.getStatusCode().series() == SERVER_ERROR);
+                status.series() == CLIENT_ERROR
+                        || status.series() == SERVER_ERROR);
     }
 
     @Override
