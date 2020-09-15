@@ -5,7 +5,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pm.provider.integration.parimatch.bet.PmBetInfo;
-import pm.provider.integration.parimatch.bet.PmBetInfoRequestTest;
+import pm.provider.integration.parimatch.bet.PmBetInfoRequest;
 import pm.provider.integration.parimatch.bet.PmBetInfoResponse;
 import pm.provider.integration.parimatch.player.PmPlayerInfo;
 import pm.provider.integration.parimatch.player.PmPlayerInfoRequest;
@@ -33,6 +33,10 @@ public class PmIntegrationService {
 
     public PmPlayerInfo getPlayerInfo(String sessionToken) {
         PmPlayerInfoRequest playerInfoRequest = new PmPlayerInfoRequest(cid, sessionToken);
+
+        // TODO: remove when switch on real service
+        playerInfoRequest = PactTransformer.transformRequestForPlayerInfo(playerInfoRequest);
+
         ResponseEntity<PmPlayerInfoResponse> response = this.restTemplate.exchange(
                 BASE_URL + "slots/playerInfo",
                 HttpMethod.POST,
@@ -51,7 +55,7 @@ public class PmIntegrationService {
             String sessionToken,
             PmPlayerInfo playerInfo
     ) {
-        PmBetInfoRequestTest betRequest = new PmBetInfoRequestTest();
+        PmBetInfoRequest betRequest = new PmBetInfoRequest();
         betRequest.setCid(cid);
         betRequest.setSessionToken(sessionToken);
         betRequest.setProductId(productId);
@@ -62,6 +66,9 @@ public class PmIntegrationService {
         betRequest.setPlayerId(playerInfo.getPlayerId());
         betRequest.setCurrency(playerInfo.getCurrency());
         betRequest.setRoundClosed(false);
+
+        // TODO: remove when switch on real service
+        betRequest = PactTransformer.transformRequestMakeBet(betRequest);
 
         HttpEntity<Object> entity = new HttpEntity<>(betRequest, getHeaders());
         ResponseEntity<PmBetInfoResponse> response = this.restTemplate.exchange(
@@ -83,7 +90,7 @@ public class PmIntegrationService {
             String sessionToken,
             PmPlayerInfo playerInfo
     ) {
-        PmBetInfoRequestTest betRequest = new PmBetInfoRequestTest();
+        PmBetInfoRequest betRequest = new PmBetInfoRequest();
         betRequest.setCid(cid);
         betRequest.setSessionToken(sessionToken);
         betRequest.setProductId(productId);
@@ -94,6 +101,9 @@ public class PmIntegrationService {
         betRequest.setPlayerId(playerInfo.getPlayerId());
         betRequest.setCurrency(playerInfo.getCurrency());
         betRequest.setRoundClosed(false);
+
+        // TODO: remove when switch on real service
+        betRequest = PactTransformer.transformRequestSetWin(betRequest);
 
         ResponseEntity<PmBetInfoResponse> response = this.restTemplate.exchange(
                 BASE_URL + "slots/win",

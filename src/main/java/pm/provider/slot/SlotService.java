@@ -6,10 +6,12 @@ import pm.provider.integration.parimatch.bet.PmBetInfo;
 import pm.provider.integration.parimatch.player.PmPlayerInfo;
 
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class SlotService {
     private PmIntegrationService integrationService;
+    private Long txId = 0L;
 
     SlotService(
             PmIntegrationService integrationService
@@ -20,19 +22,12 @@ public class SlotService {
     public SpinResult spin(PmPlayerInfo playerInfo, String sessionId, Long bet) {
         String roundId = getRoundId();
 
-        //mock
-        String mockSessionToken = "valid-session-token";
-
-        //mock
-        playerInfo.setCurrency("EUR");
-
-
         PmBetInfo betInfo = integrationService.makeBet(
-                "42", //mock
+                getTxId(),
                 roundId,
                 getProductId(),
-                1000L,
-                mockSessionToken,
+                bet,
+                sessionId,
                 playerInfo
         );
         Long winAmount = this.getRNGResult(bet);
@@ -42,30 +37,34 @@ public class SlotService {
         result.setRoundId(roundId);
 
         if (winAmount > 0) {
-            Long mockWinAmount = 2000L;
             PmBetInfo winInfo = integrationService.setWin(
-                    "43", //mock
+                    getTxId(),
                     roundId,
                     getProductId(),
-                    mockWinAmount,
-                    mockSessionToken,
+                    winAmount,
+                    sessionId,
                     playerInfo
             );
             result.setBalance(winInfo.getBalance());
-            result.setWinAmount(mockWinAmount);
         } else {
             result.setBalance(betInfo.getBalance());
-            result.setWinAmount(winAmount);
         }
+
+        result.setWinAmount(winAmount);
         return result;
     }
 
     private String getRoundId() {
-        return "round-id-1";
+        return UUID.randomUUID().toString();
+    }
+
+    private String getTxId() {
+        txId += 1;
+        return txId.toString();
     }
 
     private String getProductId() {
-        return "cool-slot-game";
+        return "new-awesome-mega-slot";
     }
 
 

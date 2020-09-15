@@ -3,7 +3,7 @@ package pm.provider.integration.parimatch.bet;
 import lombok.Data;
 
 @Data
-public class PmBetInfoRequestTest {
+public class PmBetInfoRequest {
     private String cid;
     private String sessionToken;
     private String playerId;
@@ -14,5 +14,5 @@ public class PmBetInfoRequestTest {
     private String currency;
     private boolean roundClosed;
 
-    public PmBetInfoRequestTest() { }
+    public PmBetInfoRequest() { }
 }

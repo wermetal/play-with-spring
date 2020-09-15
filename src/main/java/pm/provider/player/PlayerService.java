@@ -2,7 +2,9 @@ package pm.provider.player;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pm.provider.integration.parimatch.PmIntegrationService;
 import pm.provider.integration.parimatch.player.PmPlayerInfo;
 import pm.provider.player.login.PlayerLoginBadCredentialsException;
@@ -38,13 +40,18 @@ public class PlayerService {
         return sessionId;
     }
 
+    public boolean isLoggedIn(String sessionId) {
+        return sessionsMap.get(sessionId) != null;
+    }
+
     public PmPlayerInfo getPlayerInfo(String sessionId) {
 
-        PlayerEntity playerEntity = sessionsMap.get(sessionId);
-        return this.integrationService.getPlayerInfo(
-                // pass session token
-                playerEntity == null ? "invalid-session-token" : "valid-session-token"
-        );
+        boolean isLogged = isLoggedIn(sessionId);
+        if (!isLogged) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        return this.integrationService.getPlayerInfo(sessionId);
     }
 
 

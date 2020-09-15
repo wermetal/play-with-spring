@@ -8,6 +8,8 @@ public class PmPlayerInfoRequest {
     private String sessionToken;
 
 
+    public PmPlayerInfoRequest () {}
+
     public PmPlayerInfoRequest(String cid, String sessionToken) {
         this.cid = cid;
         this.sessionToken = sessionToken;
