@@ -31,13 +31,13 @@ public class SlotControllerTest {
     private PlayerService playerService;
 
 
-    @BeforeEach
+    /*@BeforeEach
     void init() {
         PmPlayerInfo mockedPlayerInfo = new PmPlayerInfo("player1", 2000L, "UAH", "UA");
         SpinResult spinResult = new SpinResult("round1", 300L, 1300L);
         when(playerService.getPlayerInfo(any())).thenReturn(mockedPlayerInfo);
         when(slotService.spin(any(), any(), any())).thenReturn(spinResult);
-    }
+    }*/
 
     @Test
     void whenValidInput_thenReturns200() throws Exception {
