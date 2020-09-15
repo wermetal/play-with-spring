@@ -1,4 +1,4 @@
-package ua.golubenko.slots.player;
+package ua.golubenko.slots.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ua.golubenko.slots.domain.PlayerService;
+import ua.golubenko.slots.domain.client.model.player.PmPlayerInfo;
 import ua.golubenko.slots.web.model.LoginData;
 import ua.golubenko.slots.web.PlayerController;
 
@@ -60,6 +61,35 @@ public class PlayerControllerTest {
 
         String actualResponseBody = mvcResult.getResponse().getContentAsString();
         assertThat(actualResponseBody).isEqualToIgnoringWhitespace(mockedSessionId);
+    }
+
+    @Test
+    void whenValidInput_thenReturnPlayerInfo() throws Exception {
+        String mockedSessionId = "session-string";
+
+        PmPlayerInfo playerInfo = new PmPlayerInfo(
+                "player_id_1",
+                2000L,
+                "UAH",
+                "UA"
+        );
+
+        when(playerService.getPlayerInfo(any())).thenReturn(playerInfo);
+
+        MvcResult mvcResult = mockMvc.perform(get("/player/info")
+                .contentType("application/json")
+                .header("Provider-Session-Id", mockedSessionId))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        verify(playerService, times(1)).getPlayerInfo(
+                eq(mockedSessionId)
+        );
+
+        String actualResponseBody = mvcResult.getResponse().getContentAsString();
+        assertThat(actualResponseBody).isEqualToIgnoringWhitespace(
+                objectMapper.writeValueAsString(playerInfo)
+        );
     }
 
 }

@@ -1,4 +1,4 @@
-package ua.golubenko.slots.web.model.slot;
+package ua.golubenko.slots.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -17,6 +17,8 @@ import ua.golubenko.slots.domain.SlotService;
 import ua.golubenko.slots.domain.client.model.player.PmPlayerInfo;
 import ua.golubenko.slots.domain.PlayerService;
 import ua.golubenko.slots.web.SlotController;
+import ua.golubenko.slots.web.model.slot.SlotBetRequest;
+import ua.golubenko.slots.web.model.slot.SpinResult;
 
 
 @WebMvcTest(controllers = SlotController.class)
