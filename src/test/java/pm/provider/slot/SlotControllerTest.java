@@ -1,6 +1,7 @@
 package pm.provider.slot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.mockito.Mockito.*;
@@ -30,19 +31,18 @@ public class SlotControllerTest {
     private PlayerService playerService;
 
 
+    @BeforeEach
+    void init() {
+        PmPlayerInfo mockedPlayerInfo = new PmPlayerInfo("player1", 2000L, "UAH", "UA");
+        SpinResult spinResult = new SpinResult("round1", 300L, 1300L);
+        when(playerService.getPlayerInfo(any())).thenReturn(mockedPlayerInfo);
+        when(slotService.spin(any(), any(), any())).thenReturn(spinResult);
+    }
+
     @Test
     void whenValidInput_thenReturns200() throws Exception {
-        PmPlayerInfo mockedPlayerInfo = new PmPlayerInfo("player1", 2000L, "UAH", "UA");
         String sessionId = "sessionId";
         SlotBetRequest betRequest = new SlotBetRequest(1000L);
-        SpinResult spinResult = new SpinResult("round1", 300L, 1300L);
-
-        when(playerService.getPlayerInfo(any())).thenReturn(mockedPlayerInfo);
-        when(slotService.spin(
-                mockedPlayerInfo,
-                sessionId,
-                betRequest.getBet()
-        )).thenReturn(spinResult);
 
         mockMvc.perform(post("/slot/spin")
                 .contentType("application/json")
@@ -50,6 +50,18 @@ public class SlotControllerTest {
                 .content(objectMapper.writeValueAsString(betRequest)))
                 .andExpect(status().isOk());
 
+    }
+
+    @Test
+    void whenNullValue_thenReturns400() throws Exception {
+        String sessionId = "sessionId";
+        SlotBetRequest betRequest = new SlotBetRequest(null);
+
+        mockMvc.perform(post("/slot/spin")
+                .contentType("application/json")
+                .header("Provider-Session-Id", sessionId)
+                .content(objectMapper.writeValueAsString(betRequest)))
+                .andExpect(status().isBadRequest());
     }
 
 }

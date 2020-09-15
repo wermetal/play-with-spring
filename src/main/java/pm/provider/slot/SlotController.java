@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 import pm.provider.integration.parimatch.player.PmPlayerInfo;
 import pm.provider.player.PlayerService;
 
+import javax.validation.Valid;
+
 @RestController
 public class SlotController {
     PlayerService playerService;
@@ -20,7 +22,7 @@ public class SlotController {
     @ResponseBody
     SpinResult spin(
             @RequestHeader("Provider-Session-Id") String sessionId,
-            @RequestBody SlotBetRequest betRequest
+            @Valid @RequestBody SlotBetRequest betRequest
     ) {
         PmPlayerInfo playerInfo = this.playerService.getPlayerInfo(sessionId);
         return this.slotService.spin(playerInfo, sessionId, betRequest.getBet());
