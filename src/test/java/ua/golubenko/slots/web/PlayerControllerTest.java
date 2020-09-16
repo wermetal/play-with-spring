@@ -32,7 +32,7 @@ public class PlayerControllerTest {
     private PlayerService playerService;
 
     @Test
-    void whenNullValue_thenLoginReturns400() throws Exception {
+    void login_whenNullValue_thenReturns400() throws Exception {
         LoginData loginData = new LoginData(null, null);
 
         mockMvc.perform(post("/player/login")
@@ -42,7 +42,7 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void whenValidInput_thenLoginMapsToBusinessModel() throws Exception {
+    void login_whenValidInput_thenMapsToBusinessModel() throws Exception {
         String mockedSessionId = "session-string";
         LoginData loginData = new LoginData("player1", "password");
 
@@ -64,7 +64,14 @@ public class PlayerControllerTest {
     }
 
     @Test
-    void whenValidInput_thenReturnPlayerInfo() throws Exception {
+    void playerInfo_whenInvalidSessionId_thenReturns400() throws Exception{
+        mockMvc.perform(get("/player/info")
+                .contentType("application/json"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void playerInfo_whenValidInput_thenReturnPlayerInfo() throws Exception {
         String mockedSessionId = "session-string";
 
         PmPlayerInfo playerInfo = new PmPlayerInfo(

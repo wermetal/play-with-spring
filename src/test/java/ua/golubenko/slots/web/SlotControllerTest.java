@@ -37,7 +37,7 @@ public class SlotControllerTest {
     private PlayerService playerService;
 
     @Test
-    void whenNullValue_thenReturns400() throws Exception {
+    void spin_whenNullValue_thenReturns400() throws Exception {
         String sessionId = "sessionId";
         SlotBetRequest betRequest = new SlotBetRequest(null);
 
@@ -49,7 +49,7 @@ public class SlotControllerTest {
     }
 
     @Test
-    void whenValidInput_thenMapsToBusinessModel() throws Exception {
+    void spin_whenValidInput_thenMapsToBusinessModel() throws Exception {
         String sessionId = "sessionId";
         SlotBetRequest betRequest = new SlotBetRequest(1000L);
 
@@ -71,7 +71,7 @@ public class SlotControllerTest {
     }
 
     @Test
-    void whenValidInput_thenReturnsSpinResult() throws Exception {
+    void spin_whenValidInput_thenReturnsSpinResult() throws Exception {
         String sessionId = "sessionId";
         SlotBetRequest betRequest = new SlotBetRequest(1000L);
 
